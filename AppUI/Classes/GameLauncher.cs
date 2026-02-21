@@ -1582,7 +1582,7 @@ namespace AppUI.Classes
             // Flush logs before saving in order to obtain any possible leftover in memory
             Logger.Factory.Flush(0);
 
-            using (var archive = ZipArchive.Create())
+            using (var archive = ZipArchive.CreateArchive())
             {
                 // === FF7 files ===
                 if (Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
