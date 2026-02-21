@@ -1176,7 +1176,7 @@
     <system:String x:Key="UserInterface">游戏界面</system:String>
     <system:String x:Key="WorldModels">大地图模型</system:String>
     <system:String x:Key="WorldTextures">大地图贴图</system:String>
-    <system:String x:Key="ReShadeShaders">ReShade着色器</system:String>
+    <system:String x:Key="ModShaders">着色器</system:String>
 
 
     <system:String x:Key="Cancelling">正在取消</system:String>
