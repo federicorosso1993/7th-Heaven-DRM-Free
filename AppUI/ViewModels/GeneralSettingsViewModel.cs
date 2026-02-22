@@ -533,7 +533,7 @@ namespace AppUI.ViewModels
             }
         }
 
-        internal bool SaveSettings()
+        internal bool SaveSettings(bool installFFNxIfMissing = false)
         {
             if (!ValidateSettings())
             {
@@ -592,7 +592,7 @@ namespace AppUI.ViewModels
 
             Sys.Message(new WMessage(ResourceHelper.Get(StringKey.GeneralSettingsHaveBeenUpdated)));
 
-            if (!FFNxDriverUpdater.IsAlreadyInstalled())
+            if (installFFNxIfMissing && !FFNxDriverUpdater.IsAlreadyInstalled())
             {
                 try
                 {
