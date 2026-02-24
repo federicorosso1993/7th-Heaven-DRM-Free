@@ -173,7 +173,11 @@ namespace AppUI.Classes
                 }
             }
 
-            if (Sys.Settings.FF7InstalledVersion == FF7Version.WindowsStore || Sys.Settings.FF7InstalledVersion == FF7Version.GOG)
+            if (
+                Sys.Settings.FF7InstalledVersion == FF7Version.WindowsStore
+                || Sys.Settings.FF7InstalledVersion == FF7Version.GOG
+                || Sys.Settings.FF7InstalledVersion == FF7Version.SteamReRelease
+            )
             {
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingGameIsMaxInstall));
                 if (!converter.VerifyWindowsStoreLikeInstallation())

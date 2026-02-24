@@ -19,6 +19,7 @@ namespace Iros.Workshop {
     {
         Unknown = -1,
         Steam,
+        SteamReRelease,
         ReRelease,
         Original98,
         WindowsStore,
@@ -225,6 +226,7 @@ namespace Iros.Workshop {
                 case FF7Version.Steam:
                     FF7Exe = Path.Combine(pathToFf7Install, "ff7_en.exe");
                     break;
+                case FF7Version.SteamReRelease:
                 case FF7Version.GOG:
                 case FF7Version.WindowsStore:
                     FF7Exe = Path.Combine(pathToFf7Install, "ff7", "workingdir", "ff7_en.exe");
