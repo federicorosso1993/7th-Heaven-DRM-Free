@@ -510,7 +510,7 @@ namespace AppUI.ViewModels
                     // Since both Steam and ReRelease share the same way to launch, prefer the Steam codepath
                     if (File.Exists(ff7Launcher)) Sys.Settings.FF7InstalledVersion = FF7Version.Steam;
                 }
-                else if(settings.FF7Exe.ToLower().EndsWith("ff7.exe"))
+                else if (settings.FF7Exe.ToLower().EndsWith("ff7.exe"))
                 {
                     string ff7path = Path.GetDirectoryName(settings.FF7Exe);
                     bool isRunningInWine = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WINELOADER"));
@@ -545,6 +545,26 @@ namespace AppUI.ViewModels
                     else
                         // No previously converted edition detected, looks like a genuine 1998 edition
                         Sys.Settings.FF7InstalledVersion = FF7Version.Original98;
+                }
+                else if (settings.FF7Exe.ToLower().EndsWith("ffvii.exe"))
+                {
+                    string ff7Launcher = Path.Combine(Path.GetDirectoryName(settings.FF7Exe), "FFVII_LAUNCHER.exe");
+                    string ff7SteamApi64 = Path.Combine(Path.GetDirectoryName(settings.FF7Exe), "steam_api64.dll");
+                    string goggame = Path.Combine(Path.GetDirectoryName(settings.FF7Exe), "goggame-1698970154.info");
+
+                    // Since both Steam and ReRelease share the same way to launch, prefer the Steam codepath
+                    if (File.Exists(ff7Launcher))
+                    {
+                        if (File.Exists(ff7SteamApi64))
+                            Sys.Settings.FF7InstalledVersion = FF7Version.SteamReRelease;
+                        else if (File.Exists(goggame))
+                            Sys.Settings.FF7InstalledVersion = FF7Version.GOG;
+                        else
+                            Sys.Settings.FF7InstalledVersion = FF7Version.WindowsStore;
+
+                        string ff7path = Path.GetDirectoryName(settings.FF7Exe);
+                        settings.SetPathsFromInstallationPath(ff7path);
+                    }
                 }
             }
         }
