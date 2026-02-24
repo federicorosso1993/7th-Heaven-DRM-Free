@@ -465,6 +465,7 @@ namespace AppUI
                 case FF7Version.Steam:
                     path = Directory.EnumerateDirectories(GameConverter.GetSteamFF7UserPath(), "user_*").First();
                     break;
+                case FF7Version.SteamReRelease:
                 case FF7Version.GOG:
                 case FF7Version.WindowsStore:
                     path = Path.Combine(Sys.InstallPath, "save");

@@ -2,6 +2,8 @@
 using GameFinder.Common;
 using GameFinder.RegistryUtils;
 using GameFinder.StoreHandlers.GOG;
+using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using GameFinder.StoreHandlers.Xbox;
 using Iros.Workshop;
 using NexusMods.Paths;
@@ -107,6 +109,24 @@ namespace AppUI.Classes
                         result.Switch(game =>
                         {
                             if (game.Id == gogGameId)
+                                installPath = game.Path.GetFullPath().Replace("/", "\\");
+                        }, error =>
+                        {
+                            // Do nothing
+                        });
+                    }
+                    break;
+
+                case FF7Version.SteamReRelease:
+                    var steamRRHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
+                    var steamRRGameId = AppId.From(3837340);
+
+                    foreach (var result in steamRRHandler.FindAllGames())
+                    {
+                        // using the switch method
+                        result.Switch(game =>
+                        {
+                            if (game.AppId == steamRRGameId)
                                 installPath = game.Path.GetFullPath().Replace("/", "\\");
                         }, error =>
                         {
@@ -225,6 +245,7 @@ namespace AppUI.Classes
                         }
                     }
                     break;
+                case FF7Version.SteamReRelease:
                 case FF7Version.GOG:
                 case FF7Version.WindowsStore:
                     {
@@ -684,6 +705,9 @@ namespace AppUI.Classes
 
             Directory.CreateDirectory(Path.Combine(InstallPath, "data", "kernel"));
             File.Copy(Path.Combine(InstallPath, "data", "lang-ja", "kernel", "window.bin"), Path.Combine(InstallPath, "data", "kernel", "window.bin"), true);
+
+            if (Sys.Settings.FF7InstalledVersion == FF7Version.SteamReRelease)
+                File.WriteAllText(Path.Combine(InstallPath, "steam_appid.txt"), "3837340");
 
             return true;
         }

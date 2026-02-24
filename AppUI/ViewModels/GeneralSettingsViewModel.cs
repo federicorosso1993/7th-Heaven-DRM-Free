@@ -429,7 +429,15 @@ namespace AppUI.ViewModels
                     ff7 = GameConverter.GetInstallLocation(FF7Version.Steam);
                     Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.Steam : FF7Version.Unknown;
 
-                    // If no Steam version detected, attempt to detect the Windows Store
+                    // If no Steam version detected, attempt to detect the Steam ReRelease
+                    if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
+                    {
+                        ff7 = GameConverter.GetInstallLocation(FF7Version.SteamReRelease);
+                        // Return the Steam version as both use the same logic to run from the App perspective
+                        Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.SteamReRelease : FF7Version.Unknown;
+                    }
+
+                    // If no Steam version detected, attempt to detect the Windows Store release
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {
                         ff7 = GameConverter.GetInstallLocation(FF7Version.WindowsStore);
