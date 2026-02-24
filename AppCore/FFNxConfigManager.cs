@@ -229,7 +229,7 @@ namespace Iros.Workshop.ConfigSettings
             // Override known internal keys on save to preserve mod behavior override logic
             _toml["external_sfx_path"] = "sfx";
             _toml["external_sfx_ext"] = "ogg";
-            if (Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
+            if (Sys.Settings.FF7InstalledVersion != FF7Version.Original98)
             {
                 _toml["external_music_path"] = "data/music_ogg";
                 _toml["use_external_music"] = true;
