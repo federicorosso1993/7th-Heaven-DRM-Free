@@ -437,6 +437,14 @@ namespace AppUI.ViewModels
                         Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.WindowsStore : FF7Version.Unknown;
                     }
 
+                    // If no Steam version detected, attempt to detect the GOG release
+                    if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
+                    {
+                        ff7 = GameConverter.GetInstallLocation(FF7Version.GOG);
+                        // Return the Steam version as both use the same logic to run from the App perspective
+                        Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.GOG : FF7Version.Unknown;
+                    }
+
                     // If no Steam version detected, attempt to detect the Eidos release
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {

@@ -1,5 +1,7 @@
 ﻿using AppCore;
 using GameFinder.Common;
+using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.GOG;
 using GameFinder.StoreHandlers.Xbox;
 using Iros.Workshop;
 using NexusMods.Paths;
@@ -79,15 +81,32 @@ namespace AppUI.Classes
                     break;
 
                 case FF7Version.WindowsStore:
-                    var handler = new XboxHandler(FileSystem.Shared);
-                    var results = handler.FindAllGames();
+                    var wsHandler = new XboxHandler(FileSystem.Shared);
 
-                    foreach (var result in results)
+                    foreach (var result in wsHandler.FindAllGames())
                     {
                         // using the switch method
                         result.Switch(game =>
                         {
                             if (game.Id == "39EA002F.FINALFANTASYVII")
+                                installPath = game.Path.GetFullPath().Replace("/", "\\");
+                        }, error =>
+                        {
+                            // Do nothing
+                        });
+                    }
+                    break;
+
+                case FF7Version.GOG:
+                    var gogHandler = new GOGHandler(WindowsRegistry.Shared, FileSystem.Shared);
+                    var gogGameId = GOGGameId.From(1698970154);
+
+                    foreach (var result in gogHandler.FindAllGames())
+                    {
+                        // using the switch method
+                        result.Switch(game =>
+                        {
+                            if (game.Id == gogGameId)
                                 installPath = game.Path.GetFullPath().Replace("/", "\\");
                         }, error =>
                         {
@@ -206,6 +225,7 @@ namespace AppUI.Classes
                         }
                     }
                     break;
+                case FF7Version.GOG:
                 case FF7Version.WindowsStore:
                     {
                         byte[][] requiredHashes = {
@@ -655,7 +675,7 @@ namespace AppUI.Classes
             return foundAllFiles;
         }
 
-        public bool VerifyWindowsStoreInstallation()
+        public bool VerifyWindowsStoreLikeInstallation()
         {
             string sourceExe = Path.Combine(InstallPath, "..", "resources", "ff7_1.02", "ff7_en");
             string targetExe = Sys.Settings.FF7Exe;
