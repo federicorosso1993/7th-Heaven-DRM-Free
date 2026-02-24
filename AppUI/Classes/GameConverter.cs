@@ -43,28 +43,21 @@ namespace AppUI.Classes
             switch (installedVersion)
             {
                 case FF7Version.Steam:
+                    var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
+                    var steamGameId = AppId.From(39140);
 
-                    // Detect if Steam is installed
-                    string steamPath = GetSteamPath();
-
-                    if (steamPath != null)
+                    foreach (var result in steamHandler.FindAllGames())
                     {
-                        var stream = File.OpenRead(Path.Combine(steamPath, "steamapps\\libraryfolders.vdf"));
-                        var kv = KVSerializer.Create(KVSerializationFormat.KeyValues1Text);
-                        KVObject data = kv.Deserialize(stream);
-
-                        // Look through multiple libraries
-                        foreach (var section in data)
+                        // using the switch method
+                        result.Switch(game =>
                         {
-                            var libraryPath = section["path"].ToString().Replace("\\\\", "\\");
-
-                            if (File.Exists(Path.Combine(libraryPath, "steamapps\\appmanifest_39140.acf")))
-                            {
-                                installPath = Path.Combine(libraryPath, "steamapps\\common\\FINAL FANTASY VII");
-                            }
-                        }
+                            if (game.AppId == steamGameId)
+                                installPath = game.Path.GetFullPath().Replace("/", "\\");
+                        }, error =>
+                        {
+                            // Do nothing
+                        });
                     }
-
                     break;
 
                 case FF7Version.ReRelease:
@@ -700,14 +693,21 @@ namespace AppUI.Classes
         {
             string sourceExe = Path.Combine(InstallPath, "..", "resources", "ff7_1.02", "ff7_en");
             string targetExe = Sys.Settings.FF7Exe;
+            string targetWindow = Path.Combine(InstallPath, "data", "kernel", "window.bin");
 
-            File.Copy(sourceExe, targetExe, true);
+            if (!File.Exists(targetExe)) File.Copy(sourceExe, targetExe, true);
 
-            Directory.CreateDirectory(Path.Combine(InstallPath, "data", "kernel"));
-            File.Copy(Path.Combine(InstallPath, "data", "lang-ja", "kernel", "window.bin"), Path.Combine(InstallPath, "data", "kernel", "window.bin"), true);
+            if (!File.Exists(targetWindow))
+            {
+                Directory.CreateDirectory(Path.Combine(InstallPath, "data", "kernel"));
+                File.Copy(Path.Combine(InstallPath, "data", "lang-ja", "kernel", "window.bin"), Path.Combine(InstallPath, "data", "kernel", "window.bin"), true);
+            }
 
             if (Sys.Settings.FF7InstalledVersion == FF7Version.SteamReRelease)
-                File.WriteAllText(Path.Combine(InstallPath, "steam_appid.txt"), "3837340");
+            {
+                string steamAppIdPath = Path.Combine(InstallPath, "steam_appid.txt");
+                if (!File.Exists(steamAppIdPath)) File.WriteAllText(steamAppIdPath, "3837340");
+            }
 
             return true;
         }
