@@ -425,39 +425,39 @@ namespace AppUI.ViewModels
                     // Reset state
                     Sys.Settings.FF7InstalledVersion = FF7Version.Unknown;
 
-                    // First try to autodetect the Steam installation if any
-                    ff7 = GameConverter.GetInstallLocation(FF7Version.Steam);
-                    Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.Steam : FF7Version.Unknown;
-
-                    // If no Steam version detected, attempt to detect the Steam ReRelease
+                    // If no version detected, attempt to detect the Steam ReRelease
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {
                         ff7 = GameConverter.GetInstallLocation(FF7Version.SteamReRelease);
-                        // Return the Steam version as both use the same logic to run from the App perspective
                         Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.SteamReRelease : FF7Version.Unknown;
                     }
 
-                    // If no Steam version detected, attempt to detect the Windows Store release
+                    // First try to autodetect the Steam installation if any
+                    // If no version detected, attempt to detect the Steam 2013 release
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {
-                        ff7 = GameConverter.GetInstallLocation(FF7Version.WindowsStore);
-                        // Return the Steam version as both use the same logic to run from the App perspective
-                        Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.WindowsStore : FF7Version.Unknown;
+                        ff7 = GameConverter.GetInstallLocation(FF7Version.Steam);
+                        Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.Steam : FF7Version.Unknown;
                     }
 
                     // If no Steam version detected, attempt to detect the GOG release
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {
                         ff7 = GameConverter.GetInstallLocation(FF7Version.GOG);
-                        // Return the Steam version as both use the same logic to run from the App perspective
                         Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.GOG : FF7Version.Unknown;
+                    }
+
+                    // If no Steam version detected, attempt to detect the Windows Store release
+                    if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
+                    {
+                        ff7 = GameConverter.GetInstallLocation(FF7Version.WindowsStore);
+                        Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.WindowsStore : FF7Version.Unknown;
                     }
 
                     // If no Steam version detected, attempt to detect the Eidos release
                     if (Sys.Settings.FF7InstalledVersion == FF7Version.Unknown)
                     {
                         ff7 = GameConverter.GetInstallLocation(FF7Version.ReRelease);
-                        // Return the Steam version as both use the same logic to run from the App perspective
                         Sys.Settings.FF7InstalledVersion = !string.IsNullOrWhiteSpace(ff7) ? FF7Version.Steam : FF7Version.Unknown;
                     }
 
