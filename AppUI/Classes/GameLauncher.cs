@@ -173,10 +173,10 @@ namespace AppUI.Classes
                 }
             }
 
-            if (Sys.Settings.FF7InstalledVersion == FF7Version.WindowsStore)
+            if (Sys.Settings.FF7InstalledVersion == FF7Version.WindowsStore || Sys.Settings.FF7InstalledVersion == FF7Version.GOG)
             {
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingGameIsMaxInstall));
-                if (!converter.VerifyWindowsStoreInstallation())
+                if (!converter.VerifyWindowsStoreLikeInstallation())
                 {
                     Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.YourFf7InstallationFolderIsMissingCriticalFiles), NLog.LogLevel.Error);
                     return false;

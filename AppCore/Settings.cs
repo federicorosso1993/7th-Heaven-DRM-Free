@@ -21,7 +21,8 @@ namespace Iros.Workshop {
         Steam,
         ReRelease,
         Original98,
-        WindowsStore
+        WindowsStore,
+        GOG
     }
 
     public enum GeneralOptions {
@@ -224,6 +225,7 @@ namespace Iros.Workshop {
                 case FF7Version.Steam:
                     FF7Exe = Path.Combine(pathToFf7Install, "ff7_en.exe");
                     break;
+                case FF7Version.GOG:
                 case FF7Version.WindowsStore:
                     FF7Exe = Path.Combine(pathToFf7Install, "ff7", "workingdir", "ff7_en.exe");
                     break;
