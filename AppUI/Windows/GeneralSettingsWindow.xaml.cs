@@ -46,22 +46,7 @@ namespace AppUI.Windows
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            bool settingsSaved = ViewModel.SaveSettings(true, PathChanged);
-
-            if (PathChanged)
-            {
-                MessageDialogViewModel mdvm = MessageDialogWindow.Show(ResourceHelper.Get(StringKey.Ff7ExePathChanged),
-                                             ResourceHelper.Get(StringKey.Ff7ExePathChanged).Split(",")[0],
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Warning);
-
-                if (mdvm.Result == MessageBoxResult.Yes)
-                {
-                    string exePath = Process.GetCurrentProcess().MainModule.FileName;
-                    Process.Start(exePath);
-                    System.Windows.Application.Current.Shutdown();
-                }
-            }
+            bool settingsSaved = ViewModel.SaveSettings(true);
 
             if (settingsSaved)
             {
@@ -89,24 +74,10 @@ namespace AppUI.Windows
 
             if (!string.IsNullOrEmpty(exePath))
             {
-                FileInfo fileSelected = new FileInfo(exePath);
+                Sys.Settings.FF7Exe = exePath;
+                GeneralSettingsViewModel.AutoDetectSystemPaths(Sys.Settings);
 
-                if (fileSelected.Name.Equals("FF7Config.exe", System.StringComparison.InvariantCultureIgnoreCase))
-                {
-                    MessageDialogWindow.Show(ResourceHelper.Get(StringKey.ThisExeIsUsedForConfiguringFf7Settings),
-                                             ResourceHelper.Get(StringKey.ErrorIncorrectExe),
-                                             MessageBoxButton.OK,
-                                             MessageBoxImage.Error);
-                    return;
-                }
-
-                ViewModel.FF7ExePathInput = exePath;
-            }
-
-            string original = Sys.Settings.FF7Exe;
-            if ((original != null || original != "") && original != exePath )
-            {
-                PathChanged = true;
+                ViewModel.FF7ExePathInput = Sys.Settings.FF7Exe;
             }
         }
 
