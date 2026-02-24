@@ -211,6 +211,8 @@ namespace AppUI.Classes
                         goto LaunchGame;
                     }
                 }
+                var appidPath = Path.Combine(Sys.InstallPath, "steam_appid.txt");
+                if (!File.Exists(appidPath)) File.WriteAllText(appidPath, "39140");
             }
 
             //
@@ -307,18 +309,6 @@ namespace AppUI.Classes
                 file.FileHeader.Characteristics |= Characteristics.LargeAddressAware;
                 file.Write(Sys.Settings.FF7Exe);
                 Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.App4GBPatchApplied));
-            }
-
-            //
-            // Copy the new launcher to the game path
-            //
-            if (Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
-            {
-                Instance.RaiseProgressChanged(ResourceHelper.Get(StringKey.VerifyingFf7LauncherExe));
-
-                string src = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                string dest = Path.GetDirectoryName(Sys.Settings.FF7Exe);
-                File.Copy(Path.Combine(src, "AppLauncher.exe"), Path.Combine(dest, "FF7_Launcher.exe"), true);
             }
 
             //
@@ -874,34 +864,13 @@ namespace AppUI.Classes
         {
             try
             {
-                if (Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
+                // Start game directly
+                ProcessStartInfo startInfo = new ProcessStartInfo(Sys.Settings.FF7Exe)
                 {
-                    // Start game via Steam
-                    ProcessStartInfo startInfo = new ProcessStartInfo(GameConverter.GetSteamExePath())
-                    {
-                        WorkingDirectory = GameConverter.GetSteamPath(),
-                        UseShellExecute = true,
-                        Arguments = "-applaunch 39140"
-                    };
-                    Process.Start(startInfo);
-
-                    // Wait for game process
-                    Process game = await waitForProcess(Path.GetFileNameWithoutExtension(Sys.Settings.FF7Exe));
-                    if (game != null)
-                    {
-                        ff7Proc = game;
-                    }
-                }
-                else
-                {
-                    // Start game directly
-                    ProcessStartInfo startInfo = new ProcessStartInfo(Sys.Settings.FF7Exe)
-                    {
-                        WorkingDirectory = Path.GetDirectoryName(Sys.Settings.FF7Exe),
-                        UseShellExecute = true,
-                    };
-                    ff7Proc = Process.Start(startInfo);
-                }
+                    WorkingDirectory = Path.GetDirectoryName(Sys.Settings.FF7Exe),
+                    UseShellExecute = true,
+                };
+                ff7Proc = Process.Start(startInfo);
 
                 ff7Proc.EnableRaisingEvents = true;
                 ff7Proc.Exited += (o, e) =>
@@ -1509,11 +1478,6 @@ namespace AppUI.Classes
             string fileName = Path.GetFileNameWithoutExtension(Sys.Settings.FF7Exe);
             ret = Process.GetProcessesByName(fileName).Length > 0;
 
-            if (!ret && Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
-            {
-                ret = Process.GetProcessesByName("FF7_Launcher").Length > 0;
-            }
-
             return ret;
         }
 
@@ -1526,14 +1490,6 @@ namespace AppUI.Classes
                 foreach (Process item in Process.GetProcessesByName(fileName))
                 {
                     item.Kill();
-                }
-
-                if (Sys.Settings.FF7InstalledVersion == FF7Version.Steam)
-                {
-                    foreach (Process item in Process.GetProcessesByName("FF7_Launcher"))
-                    {
-                        item.Kill();
-                    }
                 }
 
                 return true;
