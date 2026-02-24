@@ -159,116 +159,6 @@ namespace AppUI.Classes
 
         public bool IsGamePirated()
         {
-            string[] foldersToExclude = new string[] { "The_Reunion", "mods", "direct" }; // folders to skip in check
-
-            // check all folders at root of InstallPath (excluding some)
-            foreach (string subfolder in Directory.GetDirectories(InstallPath))
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo(subfolder);
-
-                if (foldersToExclude.Any(f => dirInfo.Name.Equals(f, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    continue; // don't check these folders for signs of pirated files
-                }
-
-                bool isPirated = DirectoryHasPirates(subfolder);
-                if (isPirated)
-                {
-                    return true;
-                }
-            }
-
-            // check files at root of InstallPath
-            foreach (string file in Directory.GetFiles(InstallPath))
-            {
-                bool isPirated = IsFileOrFolderAPirate(file);
-                if (isPirated)
-                {
-                    return true;
-                }
-            }
-
-            // check if steam api is a genuine one
-            using (FileStream fs = new FileStream(Path.Combine(InstallPath, "steam_api.dll"), FileMode.Open))
-            {
-                byte[] currentHash = SHA1.HashData(fs);
-                if (!currentHash.SequenceEqual(Convert.FromHexString("03BD9F3E352553A0AF41F5FE006F6249A168C243"))) return true;
-            }
-
-            // check if given exe is a genuine one
-            switch (Sys.Settings.FF7InstalledVersion)
-            {
-                case FF7Version.Steam:
-                    {
-                        byte[][] requiredHashes = {
-                            Convert.FromHexString("1C9A6F4B6F554B1B4ECB38812F9396A026A677D6"), // Steam
-                            Convert.FromHexString("3D02CFD6441C89A0062B5D8F842C0271C5F2F410"), // Steam 4GB NTCore
-                            Convert.FromHexString("769B90800B17AF7A7DC31A0C4C37F256AF934876"), // Steam 4GB 7thHeaven auto-patch
-                        };
-                        using (FileStream fs = new FileStream(Path.Combine(InstallPath, "ff7_en.exe"), FileMode.Open))
-                        {
-                            bool matchesAtLeastOne = false;
-                            byte[] currentHash = SHA1.HashData(fs);
-                            foreach (byte[] hash in requiredHashes)
-                            {
-                                if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
-                            }
-
-                            if (!matchesAtLeastOne) return true;
-                        }
-                    }
-                    break;
-                case FF7Version.Original98:
-                    {
-                        byte[][] requiredHashes = {
-                            Convert.FromHexString("4EECAF14F30E8B0CC87B88C943F1119B567452D7"), // 1.00
-                            Convert.FromHexString("684A0E87840138B4E02FC8EDB9AE2E2591CE4982"), // 1.02
-                            Convert.FromHexString("141822081B3F24EA70BE35D59449E0CA098881E3"), // 1.02 4GB
-                        };
-                        using (FileStream fs = new FileStream(Path.Combine(InstallPath, "ff7.exe"), FileMode.Open))
-                        {
-                            bool matchesAtLeastOne = false;
-                            byte[] currentHash = SHA1.HashData(fs);
-                            foreach (byte[] hash in requiredHashes)
-                            {
-                                if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
-                            }
-
-                            if (!matchesAtLeastOne) return true;
-                        }
-                    }
-                    break;
-                case FF7Version.SteamReRelease:
-                case FF7Version.GOG:
-                case FF7Version.WindowsStore:
-                    {
-                        byte[][] requiredHashes = {
-                            Convert.FromHexString("AC306AE92615AF75FF36BBA6347C67CA1284151D"), // Windows Store
-                            Convert.FromHexString("D270E690A0EA2C9D57AF506D102CF1A794E2ADCD"), // Windows Store 4GB
-                        };
-                        string[] paths =
-                        {
-                            Path.Combine(InstallPath, "..", "resources", "ff7_1.02", "ff7_en"),
-                            Sys.Settings.FF7Exe
-                        };
-                        foreach (string path in paths)
-                        {
-                            using (FileStream fs = new FileStream(path, FileMode.Open))
-                            {
-                                bool matchesAtLeastOne = false;
-                                byte[] currentHash = SHA1.HashData(fs);
-                                foreach (byte[] hash in requiredHashes)
-                                {
-                                    if (currentHash.SequenceEqual(hash)) { matchesAtLeastOne = true; break; }
-                                }
-
-                                if (!matchesAtLeastOne) return true;
-                            }
-                        }
-                    }
-                    break;
-            }
-
             return false;
         }
 
@@ -710,6 +600,7 @@ namespace AppUI.Classes
             }
 
             return true;
+
         }
 
         /// <summary>
