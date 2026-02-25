@@ -1,3 +1,7 @@
+I created this fork to delete the checks made to files since I think that count as DRM and I believe in DRM-Free games and, of course, mods. I'm not sure why they decided to force this kind of checks but they should not exist in an open source projekt.
+I'm not sure I will update this in the future but right now this version works great with Gog version.
+I just want to add that I don't support Piracy in any way, I just also don't support DRM in any way. You should buy all your games, better if they are DRM-Free.
+
 ![License](https://img.shields.io/github/license/tsunamods-codes/7th-Heaven) ![Overall Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/total?label=Overall%20Downloads) ![Latest Stable Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/latest/total?label=Latest%20Stable%20Downloads&sort=semver) ![Latest Canary Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/canary/total?label=Latest%20Canary%20Downloads) ![GitHub Actions Workflow Status](https://github.com/tsunamods-codes/7th-Heaven/actions/workflows/main-4.4.0.yml/badge.svg?branch=master)
 
 <div align="center">
