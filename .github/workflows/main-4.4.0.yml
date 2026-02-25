@@ -92,8 +92,6 @@ jobs:
         name: "${{ env._RELEASE_NAME }}-${{ env._RELEASE_VERSION }}"
         body: |
           This is a canary build. Please be aware it may be prone to crashing and is NOT tested by anyone. Use this build AT YOUR OWN RISK!
-
-          🛡️ **VirusTotal analysis:**
     - name: Publish Stable release
       uses: ncipollo/release-action@v1
       if: env._IS_GITHUB_RELEASE == 'true' && env._IS_BUILD_CANARY == 'false' && success()
@@ -104,12 +102,3 @@ jobs:
         removeArtifacts: true
         name: "${{ env._RELEASE_NAME }}-${{ env._RELEASE_VERSION }}"
         body: |
-          🛡️ **VirusTotal analysis:**
-    - name: Send alerts
-      if: env._IS_GITHUB_RELEASE == 'true' && success()
-      env:
-        _MAP_7TH_INTERNAL: "${{ secrets._7TH_INTERNAL }}"
-        _MAP_7TH_QHIMM: "${{ secrets._7TH_QHIMM }}"
-        _MAP_7TH_TSUNAMODS: "${{ secrets._7TH_TSUNAMODS }}"
-      run: ".github/workflows/alert.ps1"
-      shell: pwsh
