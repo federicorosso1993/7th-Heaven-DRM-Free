@@ -2,6 +2,10 @@ I created this fork to delete the checks made to files since I think that count 
 I'm not sure I will update this in the future but right now this version works great with Gog version.
 I just want to add that I don't support Piracy in any way, I just also don't support DRM in any way. You should buy all your games, better if they are DRM-Free.
 
+Also, to be clear I just make the method IsGamePirated always return false in this class
+https://github.com/federicorosso1993/7th-Heaven-DRM-Free/blob/master/AppUI/Classes/GameConverter.cs
+Every other commit on my end was to try the autobuild on github since I didn't want to install the current Visual Studio version locally on my pc and to update this readme.
+
 ![License](https://img.shields.io/github/license/tsunamods-codes/7th-Heaven) ![Overall Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/total?label=Overall%20Downloads) ![Latest Stable Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/latest/total?label=Latest%20Stable%20Downloads&sort=semver) ![Latest Canary Downloads](https://img.shields.io/github/downloads/tsunamods-codes/7th-Heaven/canary/total?label=Latest%20Canary%20Downloads) ![GitHub Actions Workflow Status](https://github.com/tsunamods-codes/7th-Heaven/actions/workflows/main-4.4.0.yml/badge.svg?branch=master)
 
 <div align="center">
