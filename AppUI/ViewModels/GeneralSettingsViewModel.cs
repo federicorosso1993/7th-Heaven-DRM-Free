@@ -1,9 +1,9 @@
 ﻿using AppCore;
+using AppUI.Classes;
+using AppUI.Windows;
 using Iros;
 using Iros.Workshop;
 using Microsoft.Win32;
-using AppUI.Classes;
-using AppUI.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using static System.Resources.ResXFileRef;
 
 namespace AppUI.ViewModels
 {
@@ -569,6 +570,29 @@ namespace AppUI.ViewModels
             }
         }
 
+        public bool EnsureRereleaseGameDirectoryIsReady()
+        {
+            string sourceExe = Path.Combine(Sys.InstallPath, "..", "resources", "ff7_1.02", "ff7_en");
+            string targetExe = Sys.Settings.FF7Exe;
+            string targetWindow = Path.Combine(Sys.InstallPath, "data", "kernel", "window.bin");
+
+            if (!File.Exists(targetExe)) File.Copy(sourceExe, targetExe, true);
+
+            if (!File.Exists(targetWindow))
+            {
+                Directory.CreateDirectory(Path.Combine(Sys.InstallPath, "data", "kernel"));
+                File.Copy(Path.Combine(Sys.InstallPath, "data", "lang-ja", "kernel", "window.bin"), Path.Combine(Sys.InstallPath, "data", "kernel", "window.bin"), true);
+            }
+
+            if (Sys.Settings.FF7InstalledVersion == FF7Version.SteamReRelease)
+            {
+                string steamAppIdPath = Path.Combine(Sys.InstallPath, "steam_appid.txt");
+                if (!File.Exists(steamAppIdPath)) File.WriteAllText(steamAppIdPath, "3837340");
+            }
+
+            return true;
+        }
+
         internal bool SaveSettings(bool installFFNxIfMissing = false)
         {
             if (!ValidateSettings())
@@ -627,6 +651,15 @@ namespace AppUI.ViewModels
             Directory.CreateDirectory(Sys.Settings.LibraryLocation);
 
             Sys.Message(new WMessage(ResourceHelper.Get(StringKey.GeneralSettingsHaveBeenUpdated)));
+
+            switch(Sys.Settings.FF7InstalledVersion)
+            {
+                case FF7Version.WindowsStore:
+                case FF7Version.GOG:
+                case FF7Version.SteamReRelease:
+                    EnsureRereleaseGameDirectoryIsReady();
+                    break;
+            }
 
             if (installFFNxIfMissing && !FFNxDriverUpdater.IsAlreadyInstalled())
             {

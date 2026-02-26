@@ -689,29 +689,6 @@ namespace AppUI.Classes
             return foundAllFiles;
         }
 
-        public bool VerifyWindowsStoreLikeInstallation()
-        {
-            string sourceExe = Path.Combine(InstallPath, "..", "resources", "ff7_1.02", "ff7_en");
-            string targetExe = Sys.Settings.FF7Exe;
-            string targetWindow = Path.Combine(InstallPath, "data", "kernel", "window.bin");
-
-            if (!File.Exists(targetExe)) File.Copy(sourceExe, targetExe, true);
-
-            if (!File.Exists(targetWindow))
-            {
-                Directory.CreateDirectory(Path.Combine(InstallPath, "data", "kernel"));
-                File.Copy(Path.Combine(InstallPath, "data", "lang-ja", "kernel", "window.bin"), Path.Combine(InstallPath, "data", "kernel", "window.bin"), true);
-            }
-
-            if (Sys.Settings.FF7InstalledVersion == FF7Version.SteamReRelease)
-            {
-                string steamAppIdPath = Path.Combine(InstallPath, "steam_appid.txt");
-                if (!File.Exists(steamAppIdPath)) File.WriteAllText(steamAppIdPath, "3837340");
-            }
-
-            return true;
-        }
-
         /// <summary>
         /// Verifies specific files exist in /data/[subfolder] where [subfolder] is battle, kernel, and movies.
         /// If files not found then they are copied from /data/lang-en/[subfolder] (language folder could be different based on languaged installed)
