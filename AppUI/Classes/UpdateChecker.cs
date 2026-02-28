@@ -42,9 +42,9 @@ namespace AppUI.Classes
             switch (channel)
             {
                 case AppUpdateChannelOptions.Stable:
-                    return "https://api.github.com/repos/tsunamods-codes/7th-Heaven/releases/latest";
+                    return "https://api.github.com/repos/federicorosso1993/7th-Heaven-DRM-Free/releases/latest";
                 case AppUpdateChannelOptions.Canary:
-                    return "https://api.github.com/repos/tsunamods-codes/7th-Heaven/releases/tags/canary";
+                    return "https://api.github.com/repos/federicorosso1993/7th-Heaven-DRM-Free/releases/tags/canary";
                 default:
                     return "";
             }

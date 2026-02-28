@@ -1,6 +1,6 @@
 #define MyAppName "7th Heaven"
 #define MyAppPublisher "Tsunamods"
-#define MyAppURL "https://github.com/tsunamods-codes/7th-Heaven"
+#define MyAppURL "https://github.com/federicorosso1993/7th-Heaven-DRM-Free"
 
 #ifndef MyAppVersion
   #define MyAppVersion "0.0.0.0"

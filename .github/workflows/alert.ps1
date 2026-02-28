@@ -1,15 +1,15 @@
-$downloadUrl = "https://github.com/tsunamods-codes/7th-Heaven/releases/latest"
+$downloadUrl = "https://github.com/federicorosso1993/7th-Heaven-DRM-Free/releases/latest"
 
 if ($env:_IS_BUILD_CANARY -eq "true") {
-  $downloadUrl = "https://github.com/tsunamods-codes/7th-Heaven/releases/tag/canary"
+  $downloadUrl = "https://github.com/federicorosso1993/7th-Heaven-DRM-Free/releases/tag/canary"
 }
 
 # Initial template from https://discohook.org/
 $discordPost = @"
 {
   "username": "7th Heaven",
-  "avatar_url": "https://github.com/tsunamods-codes/7th-Heaven/raw/master/.logo/app.png",
-  "content": "Release **${env:_RELEASE_VERSION}** has just been published!\n\nDownload Url: ${downloadUrl}\n\nIf you find something broken or unexpected, feel free to check existing ones first here https://github.com/tsunamods-codes/7th-Heaven/issues.\nIf non existing, then report your issue here https://github.com/tsunamods-codes/7th-Heaven/issues/new.\n\nThank you for using 7th Heaven!",
+  "avatar_url": "https://github.com/federicorosso1993/7th-Heaven-DRM-Free/raw/master/.logo/app.png",
+  "content": "Release **${env:_RELEASE_VERSION}** has just been published!\n\nDownload Url: ${downloadUrl}\n\nIf you find something broken or unexpected, feel free to check existing ones first here https://github.com/federicorosso1993/7th-Heaven-DRM-Free/issues.\nIf non existing, then report your issue here https://github.com/federicorosso1993/7th-Heaven-DRM-Free/issues/new.\n\nThank you for using 7th Heaven!",
   "embeds": [
     {
       "title": "FAQ",
@@ -18,7 +18,7 @@ $discordPost = @"
     },
     {
       "title": "7th Heaven is FOSS Software!",
-      "description": "7th Heaven is released under MS-PL license. More info here: https://github.com/tsunamods-codes/7th-Heaven#license",
+      "description": "7th Heaven is released under MS-PL license. More info here: https://github.com/federicorosso1993/7th-Heaven-DRM-Free#license",
       "color": 15746887
     }
   ]
