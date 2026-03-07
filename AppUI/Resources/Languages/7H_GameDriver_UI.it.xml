@@ -112,6 +112,15 @@
     </Option>
   </Setting>
 
+	<Setting xsi:type="Checkbox">
+	<Group>Graphics</Group>
+	<Name>Vertical Uncrop</Name>
+	<Description>Ritaglia l'immagine per rimuovere le barre nere nella parte superiore e inferiore dello schermo</Description>
+	<DefaultValue>enable_uncrop = true</DefaultValue>
+	<TrueSetting>enable_uncrop = true</TrueSetting>
+	<FalseSetting>enable_uncrop = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="Checkbox">
     <Group>Grafica</Group>
     <Name>Filtro Antisotropico</Name>
