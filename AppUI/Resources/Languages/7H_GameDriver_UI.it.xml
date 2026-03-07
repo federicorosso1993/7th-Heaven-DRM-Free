@@ -113,7 +113,7 @@
   </Setting>
 
 	<Setting xsi:type="Checkbox">
-	<Group>Graphics</Group>
+	<Group>Grafica</Group>
 	<Name>Vertical Uncrop</Name>
 	<Description>Ritaglia l'immagine per rimuovere le barre nere nella parte superiore e inferiore dello schermo</Description>
 	<DefaultValue>enable_uncrop = true</DefaultValue>
