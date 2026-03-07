@@ -113,7 +113,7 @@
   </Setting>
 
   <Setting xsi:type="Checkbox">
-	<Group>Graphics</Group>
+	<Group>画面</Group>
 	<Name>Vertical Uncrop</Name>
 	<Description>取消裁剪图像以去除屏幕顶部和底部的黑边。</Description>
 	<DefaultValue>enable_uncrop = true</DefaultValue>
