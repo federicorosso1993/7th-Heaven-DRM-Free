@@ -94,7 +94,7 @@
   </Setting>
 
   <Setting xsi:type="Checkbox">
-	<Group>Graphics</Group>
+	<Group>Gráficos</Group>
 	<Name>Vertical Uncrop</Name>
 	<Description>Desfaça o recorte da imagem para remover as barras pretas na parte superior e inferior da tela.</Description>
 	<DefaultValue>enable_uncrop = true</DefaultValue>
