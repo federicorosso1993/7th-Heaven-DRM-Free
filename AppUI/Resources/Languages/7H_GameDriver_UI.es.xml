@@ -93,6 +93,15 @@
     </Option>
   </Setting>
 
+	<Setting xsi:type="Checkbox">
+	<Group>Graphics</Group>
+	<Name>Vertical Uncrop</Name>
+	<Description>Recorte la imagen para eliminar las barras negras en la parte superior e inferior de la pantalla.</Description>
+	<DefaultValue>enable_uncrop = true</DefaultValue>
+	<TrueSetting>enable_uncrop = true</TrueSetting>
+	<FalseSetting>enable_uncrop = false</FalseSetting>
+  </Setting>
+
   <Setting xsi:type="DropDown">
     <Group>Gráficos</Group>
     <Name>Antialiasing</Name>
