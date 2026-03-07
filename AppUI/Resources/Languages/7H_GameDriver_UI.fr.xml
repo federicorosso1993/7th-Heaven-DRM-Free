@@ -113,7 +113,7 @@
   </Setting>
 
 	<Setting xsi:type="Checkbox">
-	<Group>Graphics</Group>
+	<Group>Graphismes</Group>
 	<Name>Vertical Uncrop</Name>
 	<Description>Dérecadrez l'image pour supprimer les bandes noires en haut et en bas de l'écran.</Description>
 	<DefaultValue>enable_uncrop = true</DefaultValue>
