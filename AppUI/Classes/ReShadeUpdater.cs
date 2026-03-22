@@ -212,54 +212,57 @@ namespace AppUI.Classes
 
         public static void Cleanup()
         {
-            // ================================================================================================
-            // Always cleanup these files if present, to avoid conflict with various mods
-            // ================================================================================================
-
-            Dictionary<string, bool> pathsToDelete = new Dictionary<string, bool>(){
-                { "dxgi.dll", false },
-                { "d3d11.dll", false },
-                { "d3d12.dll", false },
-                { "opengl32.dll", false },
-                { Path.GetFileName(Sys.PathToReShade), false }
-            };
-
-
-            string entryPath = "";
-            bool entryDeleteRecursive = false;
-
-            foreach (var entry in pathsToDelete)
+            if (File.Exists(Sys.PathToReShade))
             {
-                entryPath = Sys.InstallPath + "\\" + entry.Key;
-                entryDeleteRecursive = entry.Value;
+                // ================================================================================================
+                // Always cleanup these files if present, to avoid conflict with various mods
+                // ================================================================================================
 
-                // Delete recursively
-                if (entryDeleteRecursive)
-                {
-                    if (Directory.Exists(entryPath)) Directory.Delete(entryPath, true);
-                }
-                else
-                {
-                    if (File.Exists(entryPath)) File.Delete(entryPath);
-                }
-            }
+                Dictionary<string, bool> pathsToDelete = new Dictionary<string, bool>(){
+                    { "dxgi.dll", false },
+                    { "d3d11.dll", false },
+                    { "d3d12.dll", false },
+                    { "opengl32.dll", false },
+                    { Path.GetFileName(Sys.PathToReShade), false }
+                };
 
-            // Remove Registry Key
-            switch (Sys.FFNxConfig.Get("renderer_backend"))
-            {
-                // Vulkan
-                case "5":
-                    RegistryHelper.BeginTransaction();
-                    if (Environment.Is64BitOperatingSystem)
-                        RegistryHelper.DeleteValueFromKey(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Khronos\Vulkan\ImplicitLayers", Path.Combine(Sys.PathToReShadeFolder, "ReShade32.json"));
+
+                string entryPath = "";
+                bool entryDeleteRecursive = false;
+
+                foreach (var entry in pathsToDelete)
+                {
+                    entryPath = Sys.InstallPath + "\\" + entry.Key;
+                    entryDeleteRecursive = entry.Value;
+
+                    // Delete recursively
+                    if (entryDeleteRecursive)
+                    {
+                        if (Directory.Exists(entryPath)) Directory.Delete(entryPath, true);
+                    }
                     else
-                        RegistryHelper.DeleteValueFromKey(@"HKEY_LOCAL_MACHINE\Software\Khronos\Vulkan\ImplicitLayers", Path.Combine(Sys.PathToReShadeFolder, "ReShade32.json"));
-                    RegistryHelper.CommitTransaction();
-                    break;
-            }
+                    {
+                        if (File.Exists(entryPath)) File.Delete(entryPath);
+                    }
+                }
 
-            // Update the ReShade.ini on cleanup as well
-            UpdateIni();
+                // Remove Registry Key
+                switch (Sys.FFNxConfig.Get("renderer_backend"))
+                {
+                    // Vulkan
+                    case "5":
+                        RegistryHelper.BeginTransaction();
+                        if (Environment.Is64BitOperatingSystem)
+                            RegistryHelper.DeleteValueFromKey(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Khronos\Vulkan\ImplicitLayers", Path.Combine(Sys.PathToReShadeFolder, "ReShade32.json"));
+                        else
+                            RegistryHelper.DeleteValueFromKey(@"HKEY_LOCAL_MACHINE\Software\Khronos\Vulkan\ImplicitLayers", Path.Combine(Sys.PathToReShadeFolder, "ReShade32.json"));
+                        RegistryHelper.CommitTransaction();
+                        break;
+                }
+
+                // Update the ReShade.ini on cleanup as well
+                UpdateIni();
+            }
         }
 
         public static void Install()
